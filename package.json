@@ -1,0 +1,37 @@
+{
+  "name": "node-api",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vilellaj/node-api"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Jonathan Vilella",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "express": "^4.13.3",
+    "isodate": "^0.1.4",
+    "kerberos": "0.0.17",
+    "mongodb": "^2.1.4",
+    "mongoose": "^4.3.5",
+    "mongoose-deep-populate": "^2.0.3",
+    "morgan": "^1.6.1",
+    "socket.io": "^1.4.5",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "chakram": "^1.2.2",
+    "cors": "^2.7.1",
+    "gulp": "^3.9.0",
+    "gulp-jshint": "^2.0.0",
+    "gulp-replace": "^0.5.4",
+    "gulp-util": "^3.0.7",
+    "jshint": "^2.9.1",
+    "jshint-stylish": "^2.1.0",
+    "jsonwebtoken": "^5.5.4"
+  }
+}
