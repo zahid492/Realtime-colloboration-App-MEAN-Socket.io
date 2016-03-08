@@ -1,6 +1,6 @@
 NODE-API
 
-This is a simple Nodejs API, using MongoDB for persistence, Gulp for task automation and Chakram for API testing.
+This is a simple Nodejs API, using MongoDB for persistence, Gulp for task automation and PostMan for API testing.
 
 
 How to use:
@@ -29,4 +29,3 @@ A JSHint task was provided and it can be started with
 	gulp
 
 
-I am really interested in making this a slush generator soon.
