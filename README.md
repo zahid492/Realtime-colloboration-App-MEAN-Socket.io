@@ -45,10 +45,10 @@ To test the API (since its started) run:
     <a href="https://www.npmjs.com/package/chakram">Chakram(Testing)</a> </br>
     <a href="https://www.npmjs.com/package/jshint">Jshint(Watch error)</a> </br>
     
-<b>Client Side</b>
+<b>Client Side</b> </br>
 Installation(For Development):</br>
- 1.Change the root dircory to the client side
- 2.Command : grunt serve </br>
+ 1.Change the root dircory & `cd client-side` </br>
+ 2.Using grunt task runner for the client side,it helps us to show JS error by JS hint,it's so powerful for minified HTML,CSS,JS and it also help us to production ready program by `grunt serve:dist`  `grunt serve` </br>
  
  <b>Modules & Packages</b> </br>
  <a href="https://github.com/angular-ui/ui-router">Ui-Router</a></br>
