@@ -8,7 +8,7 @@ Admin can assigned a new job to a engineer and respective engineer get job assig
 <a href="http://telecom-zahid492.rhcloud.com/">Check out the live example!</a>
 
 
-<b>SEEVER-SIDE:</b>
+<b>Server Side(Node JS,Express JS,Mongo DB):</b>
 
 This is a simple Nodejs API, using MongoDB for persistence, and use mongoose wrapper. Gulp for task automation and mocha for API testing.
 
@@ -45,7 +45,7 @@ To test the API (since its started) run:
     <a href="https://www.npmjs.com/package/chakram">Chakram(Testing)</a> </br>
     <a href="https://www.npmjs.com/package/jshint">Jshint(Watch error)</a> </br>
     
-<b>Client Side</b> </br>
+<b>Client Side(Angular JS):</b> </br>
 Installation(For Development):</br>
  1.Change the root dircory & `cd client-side` </br>
  2.Using grunt task runner for the client side,it helps us to show JS error by JS hint,it's so powerful for minified HTML,CSS,JS and it also help us to production ready program by --</br>
