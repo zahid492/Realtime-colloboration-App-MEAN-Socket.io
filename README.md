@@ -44,6 +44,20 @@ To test the API (since its started) run:
     <a href="https://www.npmjs.com/package/gulp">Gulp(Task Runner)</a> </br>
     <a href="https://www.npmjs.com/package/chakram">Chakram(Testing)</a> </br>
     <a href="https://www.npmjs.com/package/jshint">Jshint(Watch error)</a> </br>
+    
+<b>Client Side</b>
+Installation(For Development):
+ 1.Change the root dircory to the client side
+ 2.Command : grunt serve
+ 
+ <b>Modules & Packages</b>
+ <a href="https://github.com/angular-ui/ui-router">Ui-Router</a></br>
+ <a href="https://github.com/asafdav/ng-csv">ngCsv</a></br>
+ <a href="http://jtblin.github.io/angular-chart.js/">Chart.js</a></br> 
+ <a href="https://github.com/btford/angular-socket-io">btford.socket-io</a></br> 
+ <a href="https://github.com/urish/angular-moment">Angular Moment</a></br> 
+ 
+
 
 
 	
