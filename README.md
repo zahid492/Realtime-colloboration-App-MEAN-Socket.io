@@ -46,7 +46,7 @@ To test the API (since its started) run:
     <a href="https://www.npmjs.com/package/jshint">Jshint(Watch error)</a> </br>
     
 <b>Client Side</b>
-Installation(For Development):
+Installation(For Development):</br>
  1.Change the root dircory to the client side
  2.Command : grunt serve
  
