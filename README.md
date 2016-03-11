@@ -5,6 +5,13 @@ This project inspired by facebook specially comment and notification system deve
 **Little Description** </br>
 Admin can assigned a new job to a engineer and respective engineer get job assigned notification.If any issue of the assigned job ,engineers of a telecom company can collaborate there task to the others engineer,they post task(site) specific issue and thread of an specific task(site) ,may have some discuss on this topics. And when engineer get a job they change job status(Complete,Implementation,Hault). Finally some socket always run in the backend if any change of data then it affects on other Engineers realtimely, when someone comment on a post then all related member of that post found a notification like as facebook.
 
+
+| Admin        | User1          | User 2|
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
+
 <a href="http://telecom-zahid492.rhcloud.com/">Check out the live example!</a>
 
 
@@ -48,10 +55,11 @@ To test the API (since its started) run:
 <b>Client Side(Angular JS):</b> </br>
 Installation(For Development):</br>
  1.Change the root dircory & `cd client-side` </br>
- 2.Using grunt task runner for the client side,it helps us to show JS error by JS hint,it's so powerful for minified HTML,CSS,JS and it also help us to production ready program by --</br>
+ 2.Using grunt task runner for the client side,it helps us to show JS error by JS hint,it's so powerful for minified HTML,CSS,JS and it also help us to production ready program. --</br>
  
+ To run this program
+ `grunt serve`(Development Phase) </br>
  `grunt serve:dist`(Production deployment) 
- `grunt serve`(Development) </br>
  
  <b>Modules & Packages</b> </br>
  <a href="https://github.com/angular-ui/ui-router">Ui-Router</a></br>
