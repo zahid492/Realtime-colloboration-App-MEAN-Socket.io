@@ -48,9 +48,9 @@ To test the API (since its started) run:
 <b>Client Side</b>
 Installation(For Development):</br>
  1.Change the root dircory to the client side
- 2.Command : grunt serve
+ 2.Command : grunt serve </br>
  
- <b>Modules & Packages</b>
+ <b>Modules & Packages</b> </br>
  <a href="https://github.com/angular-ui/ui-router">Ui-Router</a></br>
  <a href="https://github.com/asafdav/ng-csv">ngCsv</a></br>
  <a href="http://jtblin.github.io/angular-chart.js/">Chart.js</a></br> 
