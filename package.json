@@ -13,12 +13,14 @@
   "dependencies": {
     "body-parser": "^1.14.2",
     "express": "^4.13.3",
+    "formidable": "^1.0.17",
     "isodate": "^0.1.4",
     "kerberos": "0.0.17",
     "mongodb": "^2.1.4",
     "mongoose": "^4.3.5",
     "mongoose-deep-populate": "^2.0.3",
     "morgan": "^1.6.1",
+    "mv": "^2.1.1",
     "socket.io": "^1.4.5",
     "underscore": "^1.8.3"
   },

@@ -2,5 +2,7 @@
 *.*~
 
 node_modules/
-
-
+openshift-deployment/
+client-side/bower_components/
+client-side/node_modules/
+client-side/app/plugins/
