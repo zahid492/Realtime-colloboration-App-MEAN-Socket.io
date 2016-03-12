@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-md-12">
+    <!-- USERS LIST -->
+    <div class="box box-danger">
+      <div class="box-header with-border">
+        <h3 class="box-title">Latest Members</h3>
+
+        <div class="box-tools pull-right">
+          <span class="label label-danger"></span>
+          <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+          <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+        </div>
+      </div>
+      <!-- /.box-header -->
+      <div class="box-body no-padding">
+        <ul class="users-list clearfix">
+          <li ng-repeat="user in users">
+            <img ng-src="img/user_image/{{user.image}}" style="width:100px;height:100px;" alt="User Image">
+            <a class="users-list-name" ui-sref="app.dashboard.profile({id:user._id})">{{user.name}}</a>
+            <span class="users-list-date">{{user.createDate| date:'dd-MMM-yyyy'}}</span>
+          </li>
+
+        </ul>
+        <!-- /.users-list -->
+      </div>
+      <!-- /.box-body -->
+<!--       <div class="box-footer text-center">
+        <a href="javascript::" class="uppercase">View All Users</a>
+      </div> -->
+      <!-- /.box-footer -->
+    </div>
+    <!--/.box -->
+  </div>
+  <!-- /.col -->
+</div><!-- /.row -->

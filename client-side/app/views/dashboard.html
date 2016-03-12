@@ -1,0 +1,30 @@
+<div class="wrapper">
+  <div data-ng-include="'../../views/common/header/header.html'"></div>
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <h1>
+        {{$state.current.data.pageTitle}}
+
+      </h1>
+
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <!-- <ui-view autoscrol="true"  class="well animated-view"></ui-view> -->
+      <ui-view></ui-view>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <div data-ng-include="'../../views/common/footer/footer.html'"></div>
+
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+</div><!-- ./wrapper -->
+
+
+

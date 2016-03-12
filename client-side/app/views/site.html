@@ -1,0 +1,168 @@
+              <!-- Profile Image -->
+              <div class="box box-primary">
+                <div class="box-body box-profile">
+                  <h3 class="profile-username text-center">{{site.e1Code}}</h3>
+                  <p class="text-muted text-center">{{site.siteName}}</p>
+
+                  <ul class="list-group list-group-unbordered">
+                    <li class="list-group-item">
+                      <b>Site Name</b> <a class="pull-right">{{site.siteName}}</a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>BSC</b> <a class="pull-right">{{site.bsc}}</a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Assigned By</b> <a class="pull-right" href="#/dashboard/site/{{site._id}}">{{site.assignedBy.name}}</a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>Assigned to</b> <a class="pull-right" href="#/dashboard/site/{{site._id}}">{{site.assignedTo.name}}</a>
+                    </li>
+                  </ul>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+<!-- Chat box -->
+<div class="box box-success">
+  <div class="box-header">
+    <i class="fa fa-comments-o"></i>
+    <h3 class="box-title">Thread & Issue</h3>
+    <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
+      <div class="btn-group" data-toggle="btn-toggle" >
+        <button type="button" class="btn btn-default btn-sm active"><i class="fa fa-square text-green"></i></button>
+        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-square text-red"></i></button>
+      </div>
+    </div>
+  </div>
+
+<div class="box-body chat" id="chat-box">
+
+<textarea class="form-control" id="inputExperience" ng-model="postContent" placeholder="Post here..."></textarea></br>
+ <a href ng-click="addPost(site._id)" ng-class="{disabled:postContent== undefined || postContent.length==0}" class="btn btn-primary btn-block"><b>Thread & Issue Post......</b></a></br>
+
+    <!-- chat item -->
+    <div class="item" ng-repeat="post in site.posts|orderBy:'-_id'">
+      <img  ng-if="post.author.image" ng-src="img/user_image/{{post.author.image}}" alt="user image" class="online">
+      <img  ng-if="!post.author.image" ng-src="img/user_image/avatar.png" alt="user image" class="online">      
+      <p class="message">
+        <a href="#" class="name">
+          <small class="text-muted pull-right"><i class="fa fa-clock-o"></i>&nbsp;<span am-time-ago="post.createDate"></span></small>
+          {{post.author.name}}
+        </a>
+        {{post.postContent}}
+        <span ng-if="_id==post.author._id">
+        <i class="fa fa-fw pull-right fa-remove" ng-really-message="Are you sure delete the post ?"  ng-really-click="postDelete(site._id,post._id)"></i><i class="fa fa-fw pull-right fa-external-link" data-toggle="modal" data-target="#posteditModal" ng-click="postEditmodal(site._id,post._id,post.postContent)"></i>
+        </span>
+<!--         <a href ng-click="postDelete(site._id,post._id)" class='pull-right btn-box-tool'><i class='fa fa-times'></i></a> -->
+<hr>
+      </p>
+      <div class="item" style="margin-left:40px;" ng-repeat="comment in post.comments">
+       <img ng-if="comment.author.image" ng-src="img/user_image/{{comment.author.image}}" alt="user image" class="online">
+       <img ng-if="!comment.author.image" ng-src="img/user_image/avatar.png" alt="user image" class="online">       
+      <p class="message">
+        <a href="" class="name">
+
+          <small class="text-muted pull-right"><i class="fa fa-clock-o btn-box-tool"></i><span am-time-ago="comment.createDate"></span></small>
+          {{comment.author.name}}
+        </a>
+        {{comment.commentContent}}
+<!--         <a href ng-click="commentDelete(site._id,post._id,comment._id)" class='pull-right btn-box-tool'><i class='fa fa-times'></i></a> -->
+      </p>
+       <span ng-if="_id==comment.author._id">
+        <i class="fa fa-fw pull-right fa-remove" ng-really-message="Are you sure delete the comment ?"  ng-really-click="commentDelete(site._id,post._id,comment._id)"></i>
+         <i class="fa fa-fw pull-right fa-external-link" data-toggle="modal" data-target="#commenteditModal" ng-click="commentEditmodal(site._id,post._id,comment._id,comment.commentContent)"></i>
+      </span>
+      <hr>
+
+      </div><!-- /.attachment -->
+
+        <form id="{{post._id}}" class='form-horizontal' name="commentForm" style="margin-left:40px;" novalidate>
+                        <div class='form-group margin-bottom-none'>
+                          <div class='col-sm-9'>
+                            <input type="text"  ng-model="site[post._id]" ng-required="true" class="form-control input-sm" placeholder="Comment">
+                          </div>
+
+                          <div class='col-sm-3'>
+                            <button  ng-click="addComment(site._id,post._id)" ng-disabled="commentForm.$invalid" class='btn btn-danger pull-right btn-block btn-sm'>Comment</button>
+                          </div>
+                        </div>
+        </form>
+        <hr>
+    </div><!-- /.item -->
+
+
+</div><!-- /.box (chat box) -->
+
+<!-- Modal -->
+<div class="modal fade" id="commenteditModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Comment Edit</h4>
+      </div>
+      <div class="modal-body">
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+
+          <!-- form start -->
+          <form class="form-horizontal" name="commentForm" novalidate>
+            <div class="box-body">
+
+              <div class="form-group">
+
+                   <div class="col-sm-10">
+                      <textarea class="form-control" rows="3" ng-model="commentEditContent" placeholder="Enter ..." required></textarea>
+                    </div>
+              </div>
+
+            </div><!-- /.box-body -->
+            <div class="box-footer">
+              <button type="submit" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button  ng-click="commentEdit(siteIdForCommentEdit,postIdForCommentEdit,commentIdForCommentEdit)" class="btn btn-info pull-right" ng-disabled="commentForm.$invalid">Save Changes</button>
+            </div><!-- /.box-footer -->
+          </form>
+        </div><!-- /.box -->
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="posteditModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Post Edit</h4>
+      </div>
+      <div class="modal-body">
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+
+          <!-- form start -->
+          <form class="form-horizontal" name="postForm" novalidate>
+            <div class="box-body">
+
+              <div class="form-group">
+
+                   <div class="col-sm-10">
+                      <textarea class="form-control" rows="3" ng-model="postEditContent" placeholder="Enter ..." required></textarea>
+                    </div>
+              </div>
+
+            </div><!-- /.box-body -->
+            <div class="box-footer">
+              <button type="submit" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button  ng-click="postEdit(siteIdForPostEdit,postIdForPostEdit)" ng-disabled="postForm.$invalid" class="btn btn-info pull-right">Save Changes</button>
+            </div><!-- /.box-footer -->
+          </form>
+        </div><!-- /.box -->
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,385 @@
+<script language="JavaScript">
+  function toggle(source) {
+    checkboxes = document.getElementsByName('foo');
+    for (var i = 0, n = checkboxes.length; i < n; i++) {
+      checkboxes[i].checked = source.checked;
+    }
+  }
+
+
+</script>
+
+
+<div class="box">
+  <div class="box-header with-border">
+    <h3 class="box-title">Site manager</h3>
+
+    <div class="box-tools">
+      <div class="input-group" style="width: 150px;">
+        <input type="text" name="table_search" id="search" ng-model="search.siteName"
+               class="form-control input-sm pull-right" placeholder="Search">
+
+        <div class="input-group-btn">
+          <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.box-header -->
+  <div ng-if="role=='Admin'" class="box-footer clearfix ">
+    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal" ng-click="resetmodal()">Add Sites
+    </button>
+
+  </div>
+  <div ng-if="actionMessage" class="alert alert-info alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    {{actionMessage}}
+  </div>
+  <div class="clearfix">
+    <div class="col-sm-2 pull-right">
+      <select class="form-control" ng-model="search.status">
+        <option value="">All Status</option>
+        <option value="1">Plan</option>
+        <option value="2">Implementation</option>
+        <option value="3">Complete</option>
+        <option value="4">Hault</option>
+
+
+      </select>
+    </div>
+
+    <div class="col-sm-1 pull-right">
+      <input type="number" min="1" max="100" class="form-control" ng-model="pageSize">
+    </div>
+  </div>
+  <div class="box-body">
+
+
+    <table class="table table-bordered">
+      <tr>
+
+        <!-- <th ng-if="role=='Admin'"><input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" onClick="toggle(this)" > </th> -->
+        <th></th>
+        <th>Site Name</th>
+        <th>Site Code</th>
+        <th>E1 Code</th>
+        <th>BSC</th>
+        <th>Assigned By</th>
+        <th>Assigned To</th>
+        <th>Status</th>
+        <th>Action</th>
+
+      </tr>
+      <!--ng-click="scrollToFaq(item._id,'56cd87f80eea13f5509de13e')"-->
+      <tr dir-paginate="item in filtered=sites|filter:search|itemsPerPage:pageSize" current-page="currentPage"
+          id="{{item._id}}">
+        <td><input type="checkbox" name="foo" ng-checked="selection.indexOf(item._id) > -1"
+                   ng-click="checkBoxSelection(item._id)"/></td>
+        <td class="e1Code"><a ui-sref="app.dashboard.site({id:item._id})">{{::item.siteName}}</a></td>
+        <td class="siteName">{{::item.siteCode}}</td>
+        <td class="siteName">{{::item.e1Code}}</td>
+        <td class="bsc">{{::item.bsc}}</td>
+        <td class="assigned_by_name"><a ui-sref="app.dashboard.profile({id:item.assignedBy._id})">{{::item.assignedBy.name}}</a>
+        </td>
+        <td class="assigned_to_name"><a ui-sref="app.dashboard.profile({id:item.assignedTo._id})">{{::item.assignedTo.name}}</a>
+        </td>
+        <td class="status">
+          <span ng-if="item.status=='1'" id="plan" class="badge bg-purple">Plan</span>
+          <span ng-if="item.status=='2'" id="implementation" class="badge bg-blue">Implementattion</span>
+          <span ng-if="item.status=='3'" id="complete" class="badge bg-green">Complete</span>
+          <span ng-if="item.status=='4'" id="hault" class="badge bg-red">Hault</span>
+          <span id="option" class="badge"></span>
+
+
+        </td>
+        <td><span><a ng-if="role=='User' || role=='Admin'" href ng-click="view(item._id,0)" data-toggle="modal"
+                     data-target="#myViewModal"><i class="fa fa-fw fa-television"></i></a>
+                  <a ng-if="role=='Admin'" href ng-click="view(item._id,0)" data-toggle="modal"
+                     data-target="#myModal"><i class="fa fa-fw fa-edit"></i></a>
+                  <a ng-if="role=='Admin'" ng-really-message="Are you sure delete the site ?"
+                     ng-really-click="delete(item._id)"><i class="fa fa-fw fa-trash-o"></i></a>
+            </span>
+        </td>
+      </tr>
+
+
+    </table>
+  </div>
+  <!-- /.box-body -->
+  <div class="box-footer clearfix ">
+    <button class="btn btn-info btn-sm" ng-csv="csvSiteDatagetArray()" csv-header="getCsvheader()" filename="export.csv">Export
+      {{buttonExtendedName}}
+    </button>
+    <button ng-if="role=='Admin'" class="btn btn-info btn-sm" data-toggle="modal" ng-click="resetmodal()" data-target="#importModal">Import
+    </button>
+    <button ng-if="role=='Admin'" class="btn btn-info btn-sm"
+            ng-really-message="Are you sure want to delete selected items?" ng-disabled="afterCheckboxButton"
+            ng-really-click="deleteSelectedItem()">Delete Selected Item
+    </button>
+    <div class="dataTables_paginate paging_bootstrap pagination pagination-sm no-margin pull-right">
+      <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)"
+                               template-url="views/common/pagination/dirPagination.tpl.html"></dir-pagination-controls>
+    </div>
+  </div>
+</div><!-- /.box -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Site</h4>
+      </div>
+      <div class="modal-body">
+        <!-- Horizontal Form -->
+
+        <span ng-repeat="err in error" style="color:red;text-align:center">{{err}}</br></span>
+
+        <div class="box box-info">
+
+          <!-- form start -->
+          <form class="form-horizontal" name="siteForm" ng-model="siteForm" novalidation method="post">
+            <div class="box-body">
+              <div class="form-group">
+                <label for="siteCode" class="col-sm-2 control-label">Site Code*</label>
+
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" ng-required="true" ng-pattern="/^[a-zA-Z0-9-_ ]{3,10}$/"
+                         ng-model="site.siteCode" name="siteCode" placeholder="Site Code">
+
+                  <div ng-messages="siteForm.siteCode.$error" style="color:#DA4453" role="alert">
+                    <div ng-message="pattern">Site Code must be 3-15 letter</div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="form-group">
+                <label for="siteName" class="col-sm-2 control-label">Site Name*</label>
+
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" ng-model="site.siteName" ng-required="true"
+                         ng-pattern="/^[a-zA-Z0-9-_ ]{3,15}$/" name="siteName" id="inputPassword3"
+                         placeholder="Site Name">
+
+                  <div ng-messages="siteForm.siteName.$error" style="color:#DA4453" role="alert">
+                    <div ng-message="pattern">Site Name must be 3-15 letter</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="e1Code" class="col-sm-2 control-label">E1 Code*</label>
+
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" ng-model="site.e1Code" name="e1Code" ng-required="true"
+                         ng-pattern="/^[a-zA-Z0-9-_ ]{3,15}$/" id="inputPassword3" placeholder="E1 Code">
+
+                  <div ng-messages="siteForm.e1Code.$error" style="color:#DA4453" role="alert">
+                    <div ng-message="pattern">E1 Code must be 3-15 letter</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="bsc" class="col-sm-2 control-label">BSC*</label>
+
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" ng-required="true" ng-model="site.bsc" id="inputPassword3"
+                         placeholder="BSC">
+                </div>
+              </div>
+              <!-- select -->
+              <div class="form-group">
+                <label for="bsc" class="col-sm-2 control-label">Assigned To</label>
+
+                <div class="col-sm-10">
+                  <select class="form-control" ng-model="site.assignedTo">
+                    <option value="">Select Engineer</option>
+                    <option ng-repeat="user in users |orderBy:user.role=='User'" value="{{user._id}}"
+                            ng-selected="site.assignedTo._id==user._id">{{user.name}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="bsc" class="col-sm-2 control-label">Status</label>
+
+                <div class="col-sm-10">
+                  <select class="form-control" ng-model="site.status">
+                    <option value="">Select Working Status</option>
+                    <option value="1" ng-selected="site.status==1">Plan</option>
+                    <option value="2" ng-selected="site.status==2">Implementation</option>
+                    <option value="3" ng-selected="site.status==3">Complete</option>
+                    <option value="4" ng-selected="site.status==4">Hault</option>
+
+
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="description" class="col-sm-2 control-label">Description</label>
+
+                <div class="col-sm-10">
+                  <textarea class="form-control" rows="3" ng-disabled="site_moadal" ng-model="site.description"
+                            placeholder="Enter ..."></textarea>
+                </div>
+              </div>
+
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <button type="submit" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button ng-if="site.IsNewRecord==0" type="submit" ng-disabled="siteForm.$invalid"
+                      ng-click="add(site._id,site.IsNewRecord)" class="btn btn-info pull-right">Edit
+              </button>
+
+
+              <button ng-if="site.IsNewRecord==1" type="submit" ng-disabled="siteForm.$invalid" ng-click="add()"
+                      class="btn btn-info pull-right">Add
+              </button>
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="importModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Import</h4>
+      </div>
+      <div class="modal-body">
+        <!-- Horizontal Form -->
+
+        <p style="color:red;text-align:center;">{{errorMessage}}</p>
+        <div class="box box-info">
+
+          <!-- form start -->
+          <form class="form-horizontal" name="importForm" novalidate>
+            <div class="box-body">
+              <div class="form-group">
+                <label for="siteCode" class="col-sm-2 control-label">File Name</label>
+
+                <div class="col-sm-10">
+                  <input type="file" id="exampleInputFile" csv-reader results="importResults"
+                         accept=".csv" ng-model="csvInput" valid-file  required>
+
+                  <div ng-if="csvError">
+                    <button class="btn btn-info btn-sm" ng-csv="invalidData" csv-header="getInvalidHeader()"
+                            filename="Error.csv">{{invalidData.length}} Error in respective file,download it !!!
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="box-footer">
+                <button type="submit" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" ng-click="importData()" ng-disabled="importForm.$invalid" class="btn btn-info pull-right">Import</button>
+
+
+              </div>
+              <!-- /.box-footer -->
+            </div>
+          </form>
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myViewModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">View</h4>
+      </div>
+      <div class="modal-body">
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="form-group">
+                <label for="siteCode" class="col-sm-2 control-label">Site Code</label>
+
+                <div class="col-sm-10">
+                  <b>{{site.siteCode}}</b>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="siteName" class="col-sm-2 control-label">Site Name</label>
+
+                <div class="col-sm-10">
+                  <b>{{site.siteName}}</b>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="e1Code" class="col-sm-2 control-label">E1 Code</label>
+
+                <div class="col-sm-10">
+                  <b>{{site.e1Code}}</b>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="bsc" class="col-sm-2 control-label">BSC</label>
+
+                <div class="col-sm-10">
+                  <b>{{site.bsc}}</b>
+                </div>
+              </div>
+              <!-- select -->
+              <div class="form-group">
+                <label for="bsc" class="col-sm-2 control-label">Assigned To</label>
+
+                <div class="col-sm-10">
+                  <b>{{site.assignedTo.name}}</b>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="description" class="col-sm-2 control-label">Description</label>
+
+                <div class="col-sm-10">
+                  <b>{{site.description}}</b>
+                </div>
+
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <button type="submit" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button ng-if="site.IsNewRecord==0" type="submit" ng-click="view(site._id,site.IsNewRecord)"
+                        data-toggle="modal" data-dismiss="modal" data-target="#myModal" class="btn btn-info pull-right">
+                  Edit
+                </button>
+
+
+              </div>
+              <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+
+  </div>
+</div>
+

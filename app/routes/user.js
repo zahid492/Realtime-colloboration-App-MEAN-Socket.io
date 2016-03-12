@@ -72,7 +72,7 @@ module.exports = function(router, app, io) {
             user.status = req.body.status;
             user.save(function(err) {
                 if (err)
-                    console.log(err);
+                    return res.json(err);
                 //socket action when edit complete that refresh UI in  client side
                 io.emit('userAction:edit', {
                     message: 'suucess_add',
@@ -115,7 +115,7 @@ module.exports = function(router, app, io) {
     router.route('/login')
         .post(function(req, res) {
             User.findOne({
-                username: req.body.username
+                username: req.body.username,status:1
             }).select('name username password status role createDate image').exec(function(err, user) {
                 if (err) throw err;
                 if (!user) {
@@ -145,8 +145,32 @@ module.exports = function(router, app, io) {
                 }
             });
         });
+
+//multiple delete
+    router.route('/user/multipledelete')
+        .post(function(req, res) {
+            var data = req.body;
+          User.remove({
+                _id: {
+                    $in: data
+                }
+            }, function(err, site) {
+                if (err)
+                return res.json(err);
+                io.emit('chart','reload_data');
+                io.emit('userAction:multipleDelete', {
+                    message: 'suucess_delete',
+                    data: data
+                });
+                return res.json({
+                    message: 'Successfully deleted'
+                });
+            });
+        });
+
+
     router.use(function(req, res, next) {
-        var token = req.body.token || req.param('token') || req.headers['x-access-token'];
+        var token = req.body.token || req.headers['x-access-token'];
         // check if token exist
         if (token) {
             jsonwebtoken.verify(token, secretKey, function(err, decoded) {

@@ -1,0 +1,318 @@
+<script language="JavaScript">
+  function toggle(source) {
+    checkboxes = document.getElementsByName('foo');
+    for (var i = 0, n = checkboxes.length; i < n; i++) {
+      checkboxes[i].checked = source.checked;
+    }
+  }
+</script>
+
+
+<div class="box">
+  <div class="box-header with-border">
+    <h3 class="box-title">User manager</h3>
+
+    <div class="box-tools">
+      <div class="input-group" style="width: 150px;">
+        <input type="text" name="table_search" ng-model="search.name" class="form-control input-sm pull-right"
+               placeholder="Search">
+
+        <div class="input-group-btn">
+          <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.box-header -->
+  <div ng-if="role=='Admin'" class="box-footer clearfix ">
+    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal" ng-click="resetmodal()">Add Users
+    </button>
+  </div>
+  <div ng-if="actionMessage" class="alert alert-info alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+    {{actionMessage}}
+  </div>
+  <div class="clearfix">
+    <div class="col-sm-2 pull-right">
+      <select class="form-control" ng-model="search.status">
+        <option value="">All Status</option>
+        <option value="1">Active</option>
+        <option value="2">Inactive</option>
+
+
+      </select>
+    </div>
+
+    <div class="col-sm-1 pull-right">
+      <input type="number" min="1" max="100" class="form-control" ng-model="pageSize">
+    </div>
+  </div>
+  <div class="box-body">
+
+
+    <table class="table table-bordered">
+      <tr>
+
+        <!-- <th ng-if="role=='Admin'"><input type="checkbox" ng-model="selectedAll" ng-click="checkAll()" onClick="toggle(this)" > </th> -->
+        <th></th>
+        <th>Name</th>
+        <th>Role</th>
+        <th>Designation</th>
+        <th>Status</th>
+        <th>Action</th>
+
+      </tr>
+      <tr dir-paginate="item in filtered=users|filter:search|itemsPerPage:pageSize" current-page="currentPage"
+          id="{{item._id}}">
+        <td><input type="checkbox" name="foo" ng-checked="selection.indexOf(item._id) > -1"
+                   ng-click="checkBoxSelection(item._id)"/></td>
+        <td class="name"><a ui-sref="app.dashboard.profile({id:item._id})">{{::item.name}}</a></td>
+        <td class="role">{{::item.role}}</td>
+        <td class="designation">{{::item.designation}}</td>
+        <td class="status">
+          <span ng-if="item.status=='1'" id="active" class="badge bg-purple">Active</span>
+          <span ng-if="item.status=='2'" id="inactive" class="badge bg-blue">Inactive</span>
+
+          <span id="option" class="badge"></span>
+
+
+        </td>
+        <td><span><a ng-if="role=='User' || role=='Admin'" href ng-click="view(item._id,0)" data-toggle="modal"
+                     data-target="#myViewModal"><i class="fa fa-fw fa-television"></i></a>
+                  <a ng-if="role=='Admin'" href ng-click="view(item._id,0)" data-toggle="modal"
+                     data-target="#myModal"><i class="fa fa-fw fa-edit"></i></a>
+<!--                   <a ng-if="role=='Admin'" ng-really-message="Are you sure want to deactivate ?"
+                     ng-really-click="delete(item._id)"><i class="fa fa-fw fa-trash-o"></i></a> -->
+            </span>
+        </td>
+      </tr>
+
+
+    </table>
+  </div>
+  <!-- /.box-body -->
+  <div class="box-footer clearfix ">
+    <button class="btn btn-info btn-sm" ng-csv="csvDatagetArray()" csv-header="getheader()" filename="export.csv">Export
+      {{buttonExtendedName}}
+    </button>
+<!--     <button ng-if="role=='Admin'" ng-disabled="afterCheckboxButton"
+            ng-really-message="Are you sure want to delete selected items?" ng-really-click="deleteSelectedItem()"
+            class="btn btn-info btn-sm">Delete Selected Item
+    </button> -->
+    <div class="dataTables_paginate paging_bootstrap pagination pagination-sm no-margin pull-right">
+      <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)"
+                               template-url="views/common/pagination/dirPagination.tpl.html"></dir-pagination-controls>
+    </div>
+  </div>
+</div><!-- /.box -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add user</h4>
+      </div>
+      <div class="modal-body">
+        <!-- Horizontal Form -->
+        <div class="text-center" style="color:red;text-align:center;">
+          <p ng-repeat="err in error">{{err}}</br></p>
+        </div>
+        <div class="box box-info">
+
+          <!-- form start -->
+          <form class="form-horizontal" name="userForm" ng-model="userForm" novalidation method="post">
+            <div class="box-body">
+              <div class="form-group" ng-hide="IsNewRecord===0">
+                <label for="siteCode" class="col-sm-2 control-label">Name*</label>
+
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" ng-required="true" ng-pattern="/^[a-zA-Z0-9-_ ]{3,40}$/"
+                         ng-model="user.name" name="name" placeholder="Name">
+
+                  <div ng-messages="userForm.name.$error" style="color:#DA4453" role="alert">
+                    <div ng-message="pattern">Name must be 3-40 letter</div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="form-group" ng-hide="IsNewRecord===0">
+                <label for="siteName" class="col-sm-2 control-label">Username*</label>
+
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" ng-model="user.username" ng-required="true"
+                         ng-pattern="/^[a-zA-Z0-9-_ ]{3,15}$/" name="username" id="inputPassword3"
+                         placeholder="User Name">
+
+                  <div ng-messages="userForm.username.$error" style="color:#DA4453" role="alert">
+                    <div ng-message="pattern">Username must be 3-15 letter</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" ng-hide="IsNewRecord===0">
+                <label for="e1Code" class="col-sm-2 control-label">Password*</label>
+
+                <div class="col-sm-10">
+                  <input type="password" class="form-control" ng-model="user.password" name="password"
+                         ng-required="passwordRequired" ng-minlength="8" id="inputPassword3" placeholder="Password">
+
+                  <div ng-messages="userForm.password.$error" style="color:#DA4453" role="alert">
+                    <div ng-show="userForm.password.$error.minlength">Password must be minimum 8 letter</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group" ng-hide="IsNewRecord===0">
+                <label for="e1Code" class="col-sm-2 control-label">Confirm Password*</label>
+
+                <div class="col-sm-10">
+                  <input type="password" class="form-control" ng-model="user.confirmPassword" name="confirmPassword"
+                         ng-required="passwordRequired" ng-minlength="8" id="inputPassword3"
+                         placeholder="Confirm Password">
+
+                  <div ng-messages="userForm.confirmPassword.$error" style="color:#DA4453" role="alert">
+                    <div ng-show="user.confirmPassword!=user.password">Password doesn't match</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="bsc" class="col-sm-2 control-label">Designation*</label>
+
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" ng-required="true" ng-model="user.designation"
+                         id="inputPassword3" placeholder="Designation">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="Role" class="col-sm-2 control-label">Role*</label>
+
+                <div class="col-sm-10">
+                  <select class="form-control" ng-model="user.role" required>
+                    <option value="">Select Role</option>
+                    <option value="User" ng-selected="user.role=='User'">User</option>
+                    <option value="Admin" ng-selected="user.role=='Admin'">Admin</option>
+                  </select>
+                </div>
+              </div>
+              <!-- select -->
+              <div class="form-group">
+                <label for="bsc" class="col-sm-2 control-label">Status</label>
+
+                <div class="col-sm-10">
+                  <select class="form-control" ng-model="user.status">
+                    <option value="">Select Status</option>
+                    <option value="1" ng-selected="user.status==1">Active</option>
+                    <option value="2" ng-selected="user.status==2">Inactive</option>
+                  </select>
+                </div>
+              </div>
+
+
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+              <button type="submit" class="btn btn-default" data-dismiss="modal">Cancel</button>
+              <button ng-if="user.IsNewRecord==0" type="submit" ng-disabled="userForm.$invalid"
+                      ng-click="add(user._id,user.IsNewRecord)" class="btn btn-info pull-right">Edit
+              </button>
+
+
+              <button ng-if="user.IsNewRecord==1" type="submit" ng-disabled="userForm.$invalid" ng-click="add()"
+                      class="btn btn-info pull-right">Add
+              </button>
+            </div>
+            <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myViewModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">View</h4>
+      </div>
+      <div class="modal-body">
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+
+          <!-- form start -->
+          <form class="form-horizontal">
+            <div class="box-body">
+              <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">Name</label>
+
+                <div class="col-sm-10">
+                  <b>{{user.name}}</b>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="Username" class="col-sm-2 control-label">Username</label>
+
+                <div class="col-sm-10">
+                  <b>{{user.username}}</b>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="role" class="col-sm-2 control-label">Role</label>
+
+                <div class="col-sm-10">
+                  <b>{{user.role}}</b>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="designation" class="col-sm-2 control-label">Designation</label>
+
+                <div class="col-sm-10">
+                  <b>{{user.designation}}</b>
+                </div>
+              </div>
+              <!-- select -->
+              <div class="form-group">
+                <label for="bsc" class="col-sm-2 control-label">Status</label>
+
+                <div class="col-sm-10">
+                  <b>{{user.status}}</b>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="description" class="col-sm-2 control-label">Activation Data</label>
+
+                <div class="col-sm-10">
+                  <b>{{user.createDate|date:'dd:mm:yyyy'}}</b>
+                </div>
+
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <button type="submit" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button ng-if="user.IsNewRecord==0" type="submit" ng-click="view(user._id,user.IsNewRecord)"
+                        data-toggle="modal" data-dismiss="modal" data-target="#myModal" class="btn btn-info pull-right">
+                  Edit
+                </button>
+
+
+              </div>
+              <!-- /.box-footer -->
+          </form>
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+
+  </div>
+</div>
+

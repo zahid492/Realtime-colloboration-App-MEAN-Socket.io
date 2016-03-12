@@ -1,0 +1,196 @@
+<div ng-controller="HeaderController">
+  <header class="main-header">
+
+    <!-- Logo -->
+    <a ui-sref="app.dashboard.home" class="logo">
+      <!-- mini logo for sidebar mini 50x50 pixels -->
+      <span class="logo-mini"><b>A</b>LT</span>
+      <!-- logo for regular state and mobile devices -->
+      <span class="logo-lg"><b>Admin</b>LTE</span>
+    </a>
+
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top" role="navigation">
+      <!-- Sidebar toggle button-->
+      <a href ng-click="sidebar()" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <!-- Navbar Right Menu -->
+      <div class="navbar-custom-menu">
+        <ul class="nav navbar-nav">
+          <!-- Messages: style can be found in dropdown.less-->
+          <!-- Messages: style can be found in dropdown.less-->
+
+          <!-- Notifications: style can be found in dropdown.less -->
+          <li class="dropdown messages-menu">
+            <a href ng-click="afterClickNotification(_id)" class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-bell-o"></i>
+              <span ng-if="unreadNotification>0" class="label label-success">{{unreadNotification}}</span>
+            </a>
+            <ul class="dropdown-menu">
+              <li class="header">You have {{unreadNotification}} notifications</li>
+              <li>
+                <!-- inner menu: contains the actual data -->
+                <ul class="menu">
+                  <li ng-repeat="notification in notifications|orderBy:'-createDate'"><!-- start message -->
+                    <a style="background-color:#E0E0E0;"
+                       ng-if="notification.type==='site_assigned' && notification.read==false"
+                       href="#/dashboard/site/{{notification.siteId}}">
+                      <div class="pull-left">
+                        <img ng-if="notification.notificationCreatedBy.image" ng-src="img/user_image/{{notification.notificationCreatedBy.image}}"
+                             class="img-circle" alt="User Image">
+                      <img ng-if="!notification.notificationCreatedBy.image" ng-src="img/user_image/avatar.png"
+                             class="img-circle" alt="User Image">     
+                      </div>
+                      <h4>
+                        {{notification.notificationCreatedBy.name}}
+                        <small><i class="fa fa-clock-o"></i> <span am-time-ago="notification.createDate"></span></small>
+
+                      </h4>
+                      <p>{{notification.desc}}</p>
+                    </a>
+                    <a style="background-color:#E0E0E0 ;"
+                       ng-if="notification.type==='comment' && notification.read==false"
+                       href="#/dashboard/site/{{notification.siteId}}">
+                      <div class="pull-left">
+                        <img ng-src="img/user_image/{{notification.notificationCreatedBy.image}}"
+                             class="img-circle" alt="User Image">
+                      </div>
+                      <h4>
+                        {{notification.notificationCreatedBy.name}}
+                        <small><i class="fa fa-clock-o"></i> <span am-time-ago="notification.createDate"></span></small>
+
+                      </h4>
+                      <p>{{notification.desc}}</p>
+                    </a>
+                    <a ng-if="notification.type==='site_assigned' && notification.read==true"
+                       href="#/dashboard/site/{{notification.siteId}}">
+                      <div class="pull-left">
+                        <img ng-src="img/user_image/{{notification.notificationCreatedBy.image}}"
+                             class="img-circle" alt="User Image">
+                      </div>
+                      <h4>
+                        {{notification.notificationCreatedBy.name}}
+                        <small><i class="fa fa-clock-o"></i> <span am-time-ago="notification.createDate"></span></small>
+
+                      </h4>
+                      <p>{{notification.desc}}</p>
+                    </a>
+                    <a ng-if="notification.type==='comment' && notification.read==true" href
+                       ng-click="scrollToComment(notification.siteId,notification.postId)">
+                      <div class="pull-left">
+                        <img ng-src="img/user_image/{{notification.notificationCreatedBy.image}}"
+                             class="img-circle" alt="User Image">
+                      </div>
+                      <h4>
+                        {{notification.notificationCreatedBy.name}}
+                        <small><i class="fa fa-clock-o"></i> <span am-time-ago="notification.createDate"></span></small>
+
+                      </h4>
+                      <p>{{notification.desc}}</p>
+                    </a>
+                  </li>
+                  <!-- end message -->
+                </ul>
+              </li>
+              <!-- <li class="footer"><a href="#">See All Messages</a></li> -->
+            </ul>
+          </li>
+          <!-- Notifications Menu -->
+
+
+          <!-- User Account Menu -->
+          <li class="dropdown user user-menu">
+            <!-- Menu Toggle Button -->
+            <a href="" class="dropdown-toggle" data-toggle="dropdown">
+              <!-- The user image in the navbar-->
+              <img ng-if="image" ng-src="img/user_image/{{image}}" class="user-image" alt="User Image">
+              <img ng-if="!image" ng-src="img/user_image/avatar.png" class="user-image" alt="User Image">              
+              <!-- hidden-xs hides the username on small devices so only the image appears. -->
+              <span class="hidden-xs">{{name}}</span>
+            </a>
+            <ul class="dropdown-menu">
+              <!-- The user image in the menu -->
+              <li class="user-header">
+                <img ng-if="image" ng-src="img/user_image/{{image}}" class="img-circle" alt="User Image">
+                <img ng-if="!image" ng-src="img/user_image/avatar.png" class="img-circle" alt="User Image">                
+
+                <p>
+                  {{name}} - {{role}}
+                  <small>Member since -{{createDate| date:'dd-MMM-yyyy'}}</small>
+                </p>
+              </li>
+
+              <li class="user-footer">
+                <div class="pull-left">
+                  <a ui-sref="app.dashboard.profile({id:_id})" class="btn btn-default btn-flat">Profile</a>
+                </div>
+                <div class="pull-right">
+                  <a ng-click="doLogout()" class="btn btn-default btn-flat">Sign out</a>
+                </div>
+              </li>
+            </ul>
+          </li>
+          <!-- Control Sidebar Toggle Button -->
+          <li>
+            <!-- <a href="" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a> -->
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <aside class="main-sidebar"> <!-- Left side column. contains the logo and sidebar -->
+
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel">
+        <div class="pull-left image">
+          <img ng-if="image" ng-src="img/user_image/{{image}}" class="img-circle" alt="User Image">
+          <img ng-if="!image" ng-src="img/user_image/avatar.png" class="img-circle" alt="User Image">          
+        </div>
+        <div class="pull-left info">
+          <p>{{name}}</p>
+          <!-- Status -->
+          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+        </div>
+      </div>
+
+      <!-- search form (Optional) -->
+      <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Search...">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form>
+      <!-- /.search form -->
+
+      <!-- Sidebar Menu -->
+      <ul class="sidebar-menu">
+        <!-- Optionally, you can add icons to the links -->
+        <li class="active"><a ui-sref="app.dashboard.home"><i class="fa fa-pie-chart"></i> <span>Home</span></a></li>
+        <li class="active"><a ui-sref="app.dashboard.sites"><i class="fa  fa-plus-square"></i> <span>Site Manager</span></a>
+        </li>
+        <li ng-if="role=='Admin'"><a ui-sref="app.dashboard.users"><i class="fa  fa-user"></i> <span>User Manager</span></a></li>
+        <li><a ui-sref="app.dashboard.profile({id:_id})"><i class="fa fa-paper-plane-o"></i>
+          <span>{{name}},Timelines</span></a></li>
+        <li ><a ui-sref="app.dashboard.member"><i class="fa  fa-users"></i> <span>Member</span></a></li>
+        <!--<li class="treeview">
+          <a href="#"><i class="fa fa-link"></i> <span>Setting</span> <i class="fa fa-angle-left pull-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a href="#">Reset Password</a></li>
+          </ul>
+        </li>-->
+      </ul>
+      <!-- /.sidebar-menu -->
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+</div>

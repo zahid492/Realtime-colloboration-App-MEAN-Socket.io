@@ -3,6 +3,7 @@ var path = require('path');
 var fs = require('fs');
 var _ = require('underscore');
 var bcrypt = require('bcrypt-nodejs');
+var mv = require('mv');
 module.exports = function(router, app, io) {
     var User = require('../models/user');
     var modelsSite = require('../models/site');
@@ -194,7 +195,6 @@ module.exports = function(router, app, io) {
 
                 for(var i=0;i<data.posts.length;i++){
                        if(data.posts[i]._id==req.params.postId){
-                        // console.log(data.posts[i].comments[j]);
 
         var post = new modelsSite.Post({
             postContent: req.body.postContent
@@ -233,7 +233,7 @@ module.exports = function(router, app, io) {
 
               for(var j=data.length-1;j>=0;j--){
                 for(var i=data[j].posts.length-1;i>=0;i--){
-                    console.log(data[j].posts[i].author._id);
+                    //console.log(data[j].posts[i].author._id);
                    
                 
                 if(data[j].posts[i].author._id!=req.params.userId){
@@ -263,13 +263,16 @@ module.exports = function(router, app, io) {
             var username = fields.username;
             var tempPath = file.path;
             var extension = path.extname(file.name);
-            var targetPath = path.resolve('../telecom/app/dist/img/user_image/' + req.params.userId + extension);
+            var randomNo=Math.floor((Math.random() * 100) + 1);
+            console.log("Random no"+randomNo);
+            var targetPath = path.resolve('./client-side/app/img/user_image/' + req.params.userId+'_'+randomNo+extension);
+            console.log(targetPath);
             fs.rename(tempPath, targetPath, function(err) {
                 if (err) {
                     return res.json(err);
                 }
-                var image = req.params.userId + extension;
-                console.log(image);
+                var image = req.params.userId +'_'+randomNo+extension;
+              //  console.log(image);
                 User.update({
                     _id: req.params.userId
                 }, {

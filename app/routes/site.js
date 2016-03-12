@@ -17,6 +17,7 @@ module.exports = function(router, app, io) {
             });
     })
     // Here we can create a site (accessed at POST http://localhost:8080/api/site)
+    
     .post(function(req, res) {
         var site = new modelsSite.Site();
         site.siteName = req.body.siteName;
@@ -41,10 +42,16 @@ module.exports = function(router, app, io) {
                 if (err)
                     return res.json(err);
             });
+
+
+        modelsSite.Site.findById(newSite._id).select('-posts').populate('assignedBy', '_id name status').populate('assignedTo', '_id name status').exec(function(err, newSiteData) {
+
+
             io.emit('siteAction:add', {
                 message: 'suucess_add',
-                data: newSite
+                data: newSiteData
             });
+        });
             io.emit('chart','reload_data');   //socket action that refresh chart/home page
             return res.json({
                 message: 'Site created!',
@@ -65,7 +72,6 @@ module.exports = function(router, app, io) {
     //update single site
     .put(function(req, res) {
             modelsSite.Site.findById(req.params.siteId, function(err, site) {
-                console.log(req.params.siteId);
                 if (err)
                     return res.json(err);
                 // var site = new Site();   
@@ -152,14 +158,15 @@ module.exports = function(router, app, io) {
                     upsert: true,
                     new: true
                 }, function(err, numberAffected, rawResponse) { // insert item into db
-                    if (err) {
+                    if (err) 
                         return res.json(err);
                         
-
+                          
                         return res.json({message: 'Import done.......'});
-                    }
+                    
                 });
             }
+            
             io.emit('siteAction:import', 'suucess_import'); //socket action on Import that refresh UI
         });
 //multiple delete
