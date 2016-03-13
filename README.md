@@ -6,10 +6,16 @@ This project inspired by facebook specially comment and notification system deve
 Admin can assigned a new job to a engineer and respective engineer get job assigned notification.If any issue of the assigned job ,engineers of a telecom company can collaborate there task to the others engineer,they post task(site) specific issue and thread of an specific task(site) ,may have some discuss on this topics. And when engineer get a job they change job status(Complete,Implementation,Hault). Finally some socket always run in the backend if any change of data then it affects on other Engineers realtimely, when someone comment on a post then all related member of that post found a notification like as facebook.
 
 
+
+
         | Admin        | User1     | User 2    |
 --------| -------------|:---------:| ---------:|
 Username| admin        | user1     | user2     |
 Password| 123123123    | 123123123 | 123123123 |
+
+
+I attached few credential,please connect all in at a time in different browser,then admin assigned job a user category then see in user browser a floating Notification like as facebook, and if any one comment on a specific site(inside site) then a notification sent to the all related person of that post. 
+
 
 <a href="http://telecom-zahid492.rhcloud.com/">Check out the live example!</a>
 
