@@ -77,7 +77,7 @@ Installation(For Development):</br>
  Testing:
  In future i try to some E2E testing by protractor sellenium webdriver.
  
- 
+ If you fell free to contact with me...`zahidcse09@gmail.com`
  
   
  
