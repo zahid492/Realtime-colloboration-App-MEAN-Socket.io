@@ -3,7 +3,7 @@
 This project inspired by facebook specially comment and notification system developed by `MEAN(Mongo,Express Js,Angular JS,Node JS) & Socket.io.`
 
 **Little Description** </br>
-Admin can assigned a new job to a engineer and respective engineer get job assigned notification.If any issue of the assigned job ,engineers of a telecom company can collaborate there task to the others engineer,they post task(site) specific issue and thread of an specific task(site) ,may have some discuss on this topics. And when engineer get a job they change job status(Complete,Implementation,Hault). Finally some socket always run in the backend if any change of data then it affects on other Engineers realtimely, when someone comment on a post then all related member of that post found a notification like as facebook.
+Admin can assigned a new job to a engineer and respective engineer get job assigned notification.If any issue of the assigned job ,engineers of a telecom company can collaborate there task to the others engineer,they post task(site) specific issue and thread of an specific task(site) ,may have some discuss on this topics. And when engineer get a job they change job status(Complete,Implementation,Hault). Finally some socket always run in the backend if any change of data then it affects on other Engineers realtimely, when someone comment on a post then just only all related member of that post found a notification like as facebook.
 
 
 
@@ -72,6 +72,14 @@ Installation(For Development):</br>
  <a href="http://jtblin.github.io/angular-chart.js/">Chart.js</a></br> 
  <a href="https://github.com/btford/angular-socket-io">btford.socket-io</a></br> 
  <a href="https://github.com/urish/angular-moment">Angular Moment</a></br> 
+ 
+ 
+ Testing:
+ In future i try to some E2E testing by protractor sellenium webdriver.
+ 
+ 
+ 
+  
  
 
 
