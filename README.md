@@ -8,10 +8,10 @@ Admin can assigned a new job to a engineer and respective engineer get job assig
 
 
 
-        | Admin        | User1     | User 2    |
---------| -------------|:---------:| ---------:|
-Username| admin        | user1     | user2     |
-Password| 123123123    | 123123123 | 123123123 |
+|   | Admin  | User1  |User2   |
+|---|---|---|---|
+| Username  | admin |  user1 | user2  |
+| Password  |123123123   |123123123   |  123123123 |
 
 
 I attached few credential,please connect all in at a time in different browser,then admin assigned job a user category then see in user browser a floating Notification like as facebook, and if any one comment on a specific site(inside site) then a notification sent to the all related person of that post. 
